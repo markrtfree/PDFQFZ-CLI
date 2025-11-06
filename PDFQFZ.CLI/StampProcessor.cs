@@ -730,12 +730,17 @@ internal sealed class StampProcessor : IDisposable
         {
             FallbackCopyReplace(inputPath, tempPath);
         }
+        catch (UnauthorizedAccessException)
+        {
+            FallbackCopyReplace(inputPath, tempPath);
+        }
     }
 
     private static void FallbackCopyReplace(string inputPath, string tempPath)
     {
         try
         {
+            EnsureWritable(inputPath);
             File.Copy(tempPath, inputPath, true);
             File.Delete(tempPath);
         }
@@ -758,6 +763,27 @@ internal sealed class StampProcessor : IDisposable
         catch
         {
             // Swallow cleanup exceptions to avoid masking the original failure.
+        }
+    }
+
+    private static void EnsureWritable(string inputPath)
+    {
+        try
+        {
+            if (!File.Exists(inputPath))
+            {
+                return;
+            }
+
+            var attributes = File.GetAttributes(inputPath);
+            if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
+            {
+                File.SetAttributes(inputPath, attributes & ~FileAttributes.ReadOnly);
+            }
+        }
+        catch
+        {
+            // Ignore attribute failures; copy attempt will surface any real issue.
         }
     }
 }
