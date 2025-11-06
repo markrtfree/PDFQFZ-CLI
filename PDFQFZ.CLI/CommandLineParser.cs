@@ -159,11 +159,6 @@ internal static class CommandLineParser
             throw new ArgumentException("At least one --input argument or positional input path is required.");
         }
 
-        if (string.IsNullOrWhiteSpace(outputDir))
-        {
-            throw new ArgumentException("--output must be specified.");
-        }
-
         if (string.IsNullOrWhiteSpace(stampImage))
         {
             throw new ArgumentException("--stamp-image must be specified.");
