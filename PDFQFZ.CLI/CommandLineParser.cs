@@ -15,7 +15,6 @@ internal static class CommandLineParser
         string? outputDir = null;
         string? stampImage = null;
         string suffix = "_stamped";
-        var suffixExplicitlySet = false;
         bool recursive = false;
         bool overwrite = false;
         bool convertWhite = true;
@@ -75,7 +74,6 @@ internal static class CommandLineParser
                     break;
                 case "--suffix":
                     suffix = RequireValue(args, ref i, arg);
-                    suffixExplicitlySet = true;
                     break;
                 case "--no-white-transparent":
                     convertWhite = false;
@@ -205,11 +203,6 @@ internal static class CommandLineParser
             Password = signPassword,
             SelfSignedSubject = signSubject
         };
-
-        if (outputDir is null && suffixExplicitlySet)
-        {
-            throw new ArgumentException("--suffix requires --output to be specified.");
-        }
 
         var stampingOptions = new StampingOptions
         {
