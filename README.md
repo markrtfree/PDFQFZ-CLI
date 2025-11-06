@@ -7,6 +7,7 @@
 ![PDFQFZ GUI](./pdfqfz.jpg)
 
 ## CLI 版本（PDFQFZ.CLI）
+自 v1.0.2 起，官方发布包提供单文件版 `PDFQFZ.CLI.exe`（内含全部依赖）。
 
 ### 构建
 
